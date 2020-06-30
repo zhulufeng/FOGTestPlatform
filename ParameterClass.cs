@@ -39,6 +39,9 @@ namespace FOGTestPlatform
         public int numOftestChannels;
         public bool[] serialportEnable = new bool[7];
         public bool isLoadData = false;
+        public bool isHighFreq = false;
+        public bool isSaveHex = false;
+        public bool isScaleFactorTest = false;
     }
  
     public class Fogdata

@@ -37,7 +37,7 @@ namespace FOGTestPlatform
         public SerialCfgDlg()
         {
             InitializeComponent();
-            
+        
             //SetConfigFile();
             setComBox();
             checkedListBox_Channel.SetItemChecked(0, true);
@@ -75,7 +75,23 @@ namespace FOGTestPlatform
             this.groupBox_channel_4.Enabled = false;
             this.groupBox_channel_5.Enabled = false;
             this.groupBox_channel_6.Enabled = false;
-            for (int i = 0; i < sht.LastRowNum; i++)
+            if (GetCell(sht,15,1).ToString().Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                checkBox_isHighFreq.Checked = true;
+            }
+            else
+            {
+                checkBox_isHighFreq.Checked = false;
+            }
+            if (GetCell(sht, 16, 1).ToString().Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                checkBox_isHexSave.Checked = true;
+            }
+            else
+            {
+                checkBox_isHexSave.Checked = false;
+            }
+            for (int i = 0; i < 8; i++)//v
             {
                 if (sht.GetRow(i).GetCell(1).ToString().Equals("true",StringComparison.OrdinalIgnoreCase))//判断通道是否使能
                 {
@@ -253,6 +269,30 @@ namespace FOGTestPlatform
             //配置转台通道
             IRow row = sht.GetRow(1);
             ICell cell = GetCell(sht, 1, 1);
+            cell = GetCell(sht, 15, 1);
+            cell.SetCellType(CellType.Blank);
+            if (this.checkBox_isHighFreq.Checked)
+            {
+                cell.SetCellValue("True");
+
+            }
+            else
+            {
+                cell.SetCellValue("False");
+//                 cell = GetCell(sht, 14, 1);
+//                 cell.SetCellType(CellType.Blank);
+//                 cell.SetCellValue("1");
+            }
+            cell = GetCell(sht, 16, 1);
+            cell.SetCellType(CellType.Blank);
+            if (this.checkBox_isHexSave.Checked)
+            {
+                cell.SetCellValue("True");
+            }
+            else
+            {
+                cell.SetCellValue("False");
+            }
             //清空原来的表格中所有参数
             for (int i = 1; i < 8; i++)
                 for (int j = 2; j < 9; j++)

@@ -134,6 +134,8 @@
             this.cBox_CH6_BaudRate = new System.Windows.Forms.ComboBox();
             this.label35 = new System.Windows.Forms.Label();
             this.cBox_CH6_COMID = new System.Windows.Forms.ComboBox();
+            this.checkBox_isHighFreq = new System.Windows.Forms.CheckBox();
+            this.checkBox_isHexSave = new System.Windows.Forms.CheckBox();
             this.groupBox_Table.SuspendLayout();
             this.groupBox_channel_1.SuspendLayout();
             this.groupBox_channel_3.SuspendLayout();
@@ -158,9 +160,9 @@
             this.groupBox_Table.Controls.Add(this.label1);
             this.groupBox_Table.Controls.Add(this.cBox_Table_COMID);
             this.groupBox_Table.Location = new System.Drawing.Point(27, 23);
-            this.groupBox_Table.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_Table.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox_Table.Name = "groupBox_Table";
-            this.groupBox_Table.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_Table.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox_Table.Size = new System.Drawing.Size(157, 224);
             this.groupBox_Table.TabIndex = 0;
             this.groupBox_Table.TabStop = false;
@@ -189,7 +191,7 @@
             // tBox_table_ID
             // 
             this.tBox_table_ID.Location = new System.Drawing.Point(66, 25);
-            this.tBox_table_ID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_table_ID.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_table_ID.Name = "tBox_table_ID";
             this.tBox_table_ID.Size = new System.Drawing.Size(82, 21);
             this.tBox_table_ID.TabIndex = 24;
@@ -203,7 +205,7 @@
             "none",
             "even"});
             this.cBox_Table_ParityBit.Location = new System.Drawing.Point(66, 193);
-            this.cBox_Table_ParityBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_Table_ParityBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_Table_ParityBit.Name = "cBox_Table_ParityBit";
             this.cBox_Table_ParityBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_Table_ParityBit.TabIndex = 4;
@@ -227,7 +229,7 @@
             "1.5",
             "2"});
             this.cBox_Table_StopBit.Location = new System.Drawing.Point(66, 160);
-            this.cBox_Table_StopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_Table_StopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_Table_StopBit.Name = "cBox_Table_StopBit";
             this.cBox_Table_StopBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_Table_StopBit.TabIndex = 3;
@@ -250,7 +252,7 @@
             "8",
             "9"});
             this.cBox_Table_DataBit.Location = new System.Drawing.Point(66, 127);
-            this.cBox_Table_DataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_Table_DataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_Table_DataBit.Name = "cBox_Table_DataBit";
             this.cBox_Table_DataBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_Table_DataBit.TabIndex = 2;
@@ -281,7 +283,7 @@
             "614400",
             "921600"});
             this.CBox_Table_BaudRate.Location = new System.Drawing.Point(66, 93);
-            this.CBox_Table_BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CBox_Table_BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.CBox_Table_BaudRate.Name = "CBox_Table_BaudRate";
             this.CBox_Table_BaudRate.Size = new System.Drawing.Size(82, 20);
             this.CBox_Table_BaudRate.TabIndex = 1;
@@ -300,7 +302,7 @@
             // 
             this.cBox_Table_COMID.FormattingEnabled = true;
             this.cBox_Table_COMID.Location = new System.Drawing.Point(66, 60);
-            this.cBox_Table_COMID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_Table_COMID.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_Table_COMID.Name = "cBox_Table_COMID";
             this.cBox_Table_COMID.Size = new System.Drawing.Size(82, 20);
             this.cBox_Table_COMID.TabIndex = 0;
@@ -323,9 +325,9 @@
             this.groupBox_channel_1.Controls.Add(this.cBox_CH1_COMID);
             this.groupBox_channel_1.Enabled = false;
             this.groupBox_channel_1.Location = new System.Drawing.Point(251, 23);
-            this.groupBox_channel_1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_1.Name = "groupBox_channel_1";
-            this.groupBox_channel_1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_1.Size = new System.Drawing.Size(157, 254);
             this.groupBox_channel_1.TabIndex = 5;
             this.groupBox_channel_1.TabStop = false;
@@ -344,7 +346,7 @@
             // tBox_CH1_SF
             // 
             this.tBox_CH1_SF.Location = new System.Drawing.Point(67, 225);
-            this.tBox_CH1_SF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH1_SF.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH1_SF.Name = "tBox_CH1_SF";
             this.tBox_CH1_SF.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH1_SF.TabIndex = 24;
@@ -363,7 +365,7 @@
             // tBox_CH1_FOGID
             // 
             this.tBox_CH1_FOGID.Location = new System.Drawing.Point(67, 25);
-            this.tBox_CH1_FOGID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH1_FOGID.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH1_FOGID.Name = "tBox_CH1_FOGID";
             this.tBox_CH1_FOGID.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH1_FOGID.TabIndex = 22;
@@ -387,7 +389,7 @@
             "none",
             "even"});
             this.cBox_CH1_ParityBit.Location = new System.Drawing.Point(67, 193);
-            this.cBox_CH1_ParityBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH1_ParityBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH1_ParityBit.Name = "cBox_CH1_ParityBit";
             this.cBox_CH1_ParityBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH1_ParityBit.TabIndex = 4;
@@ -411,7 +413,7 @@
             "1.5",
             "2"});
             this.cBox_CH1_StopBit.Location = new System.Drawing.Point(67, 159);
-            this.cBox_CH1_StopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH1_StopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH1_StopBit.Name = "cBox_CH1_StopBit";
             this.cBox_CH1_StopBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH1_StopBit.TabIndex = 3;
@@ -434,7 +436,7 @@
             "8",
             "9"});
             this.cBox_CH1_DataBit.Location = new System.Drawing.Point(67, 125);
-            this.cBox_CH1_DataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH1_DataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH1_DataBit.Name = "cBox_CH1_DataBit";
             this.cBox_CH1_DataBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH1_DataBit.TabIndex = 2;
@@ -465,7 +467,7 @@
             "614400",
             "921600"});
             this.cBox_CH1_BaudRate.Location = new System.Drawing.Point(67, 91);
-            this.cBox_CH1_BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH1_BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH1_BaudRate.Name = "cBox_CH1_BaudRate";
             this.cBox_CH1_BaudRate.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH1_BaudRate.TabIndex = 1;
@@ -484,7 +486,7 @@
             // 
             this.cBox_CH1_COMID.FormattingEnabled = true;
             this.cBox_CH1_COMID.Location = new System.Drawing.Point(67, 57);
-            this.cBox_CH1_COMID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH1_COMID.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH1_COMID.Name = "cBox_CH1_COMID";
             this.cBox_CH1_COMID.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH1_COMID.TabIndex = 0;
@@ -507,9 +509,9 @@
             this.groupBox_channel_3.Controls.Add(this.cBox_CH3_COMID);
             this.groupBox_channel_3.Enabled = false;
             this.groupBox_channel_3.Location = new System.Drawing.Point(705, 23);
-            this.groupBox_channel_3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_3.Name = "groupBox_channel_3";
-            this.groupBox_channel_3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_3.Size = new System.Drawing.Size(157, 254);
             this.groupBox_channel_3.TabIndex = 5;
             this.groupBox_channel_3.TabStop = false;
@@ -528,7 +530,7 @@
             // tBox_CH3_SF
             // 
             this.tBox_CH3_SF.Location = new System.Drawing.Point(65, 225);
-            this.tBox_CH3_SF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH3_SF.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH3_SF.Name = "tBox_CH3_SF";
             this.tBox_CH3_SF.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH3_SF.TabIndex = 29;
@@ -557,7 +559,7 @@
             // tBox_CH3_FOGID
             // 
             this.tBox_CH3_FOGID.Location = new System.Drawing.Point(65, 24);
-            this.tBox_CH3_FOGID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH3_FOGID.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH3_FOGID.Name = "tBox_CH3_FOGID";
             this.tBox_CH3_FOGID.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH3_FOGID.TabIndex = 27;
@@ -571,7 +573,7 @@
             "none",
             "even"});
             this.cBox_CH3_ParityBit.Location = new System.Drawing.Point(65, 189);
-            this.cBox_CH3_ParityBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH3_ParityBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH3_ParityBit.Name = "cBox_CH3_ParityBit";
             this.cBox_CH3_ParityBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH3_ParityBit.TabIndex = 4;
@@ -595,7 +597,7 @@
             "1.5",
             "2"});
             this.cBox_CH3_StopBit.Location = new System.Drawing.Point(65, 156);
-            this.cBox_CH3_StopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH3_StopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH3_StopBit.Name = "cBox_CH3_StopBit";
             this.cBox_CH3_StopBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH3_StopBit.TabIndex = 3;
@@ -618,7 +620,7 @@
             "8",
             "9"});
             this.cBox_CH3_DataBit.Location = new System.Drawing.Point(65, 123);
-            this.cBox_CH3_DataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH3_DataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH3_DataBit.Name = "cBox_CH3_DataBit";
             this.cBox_CH3_DataBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH3_DataBit.TabIndex = 2;
@@ -649,7 +651,7 @@
             "614400",
             "921600"});
             this.cBox_CH3_BaudRate.Location = new System.Drawing.Point(65, 91);
-            this.cBox_CH3_BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH3_BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH3_BaudRate.Name = "cBox_CH3_BaudRate";
             this.cBox_CH3_BaudRate.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH3_BaudRate.TabIndex = 1;
@@ -668,7 +670,7 @@
             // 
             this.cBox_CH3_COMID.FormattingEnabled = true;
             this.cBox_CH3_COMID.Location = new System.Drawing.Point(65, 58);
-            this.cBox_CH3_COMID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH3_COMID.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH3_COMID.Name = "cBox_CH3_COMID";
             this.cBox_CH3_COMID.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH3_COMID.TabIndex = 0;
@@ -691,9 +693,9 @@
             this.groupBox_channel_4.Controls.Add(this.cBox_CH4_COMID);
             this.groupBox_channel_4.Enabled = false;
             this.groupBox_channel_4.Location = new System.Drawing.Point(27, 292);
-            this.groupBox_channel_4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_4.Name = "groupBox_channel_4";
-            this.groupBox_channel_4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_4.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_4.Size = new System.Drawing.Size(157, 254);
             this.groupBox_channel_4.TabIndex = 5;
             this.groupBox_channel_4.TabStop = false;
@@ -722,7 +724,7 @@
             // tBox_CH4_SF
             // 
             this.tBox_CH4_SF.Location = new System.Drawing.Point(66, 227);
-            this.tBox_CH4_SF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH4_SF.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH4_SF.Name = "tBox_CH4_SF";
             this.tBox_CH4_SF.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH4_SF.TabIndex = 28;
@@ -741,7 +743,7 @@
             // tBox_CH4_FOGID
             // 
             this.tBox_CH4_FOGID.Location = new System.Drawing.Point(66, 29);
-            this.tBox_CH4_FOGID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH4_FOGID.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH4_FOGID.Name = "tBox_CH4_FOGID";
             this.tBox_CH4_FOGID.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH4_FOGID.TabIndex = 29;
@@ -755,7 +757,7 @@
             "none",
             "even"});
             this.cBox_CH4_ParityBit.Location = new System.Drawing.Point(66, 197);
-            this.cBox_CH4_ParityBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH4_ParityBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH4_ParityBit.Name = "cBox_CH4_ParityBit";
             this.cBox_CH4_ParityBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH4_ParityBit.TabIndex = 4;
@@ -779,7 +781,7 @@
             "1.5",
             "2"});
             this.cBox_CH4_StopBit.Location = new System.Drawing.Point(66, 163);
-            this.cBox_CH4_StopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH4_StopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH4_StopBit.Name = "cBox_CH4_StopBit";
             this.cBox_CH4_StopBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH4_StopBit.TabIndex = 3;
@@ -802,7 +804,7 @@
             "8",
             "9"});
             this.cBox_CH4_DataBit.Location = new System.Drawing.Point(66, 130);
-            this.cBox_CH4_DataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH4_DataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH4_DataBit.Name = "cBox_CH4_DataBit";
             this.cBox_CH4_DataBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH4_DataBit.TabIndex = 2;
@@ -833,7 +835,7 @@
             "614400",
             "921600"});
             this.cBox_CH4_BaudRate.Location = new System.Drawing.Point(66, 97);
-            this.cBox_CH4_BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH4_BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH4_BaudRate.Name = "cBox_CH4_BaudRate";
             this.cBox_CH4_BaudRate.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH4_BaudRate.TabIndex = 1;
@@ -852,7 +854,7 @@
             // 
             this.cBox_CH4_COMID.FormattingEnabled = true;
             this.cBox_CH4_COMID.Location = new System.Drawing.Point(66, 63);
-            this.cBox_CH4_COMID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH4_COMID.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH4_COMID.Name = "cBox_CH4_COMID";
             this.cBox_CH4_COMID.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH4_COMID.TabIndex = 0;
@@ -860,8 +862,8 @@
             // Btn_OK
             // 
             this.Btn_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Btn_OK.Location = new System.Drawing.Point(704, 478);
-            this.Btn_OK.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Btn_OK.Location = new System.Drawing.Point(704, 513);
+            this.Btn_OK.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_OK.Name = "Btn_OK";
             this.Btn_OK.Size = new System.Drawing.Size(63, 33);
             this.Btn_OK.TabIndex = 6;
@@ -872,8 +874,8 @@
             // Btn_Cancel
             // 
             this.Btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Btn_Cancel.Location = new System.Drawing.Point(799, 478);
-            this.Btn_Cancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Btn_Cancel.Location = new System.Drawing.Point(799, 513);
+            this.Btn_Cancel.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_Cancel.Name = "Btn_Cancel";
             this.Btn_Cancel.Size = new System.Drawing.Size(63, 33);
             this.Btn_Cancel.TabIndex = 6;
@@ -898,9 +900,9 @@
             this.groupBox_channel_5.Controls.Add(this.cBox_CH5_COMID);
             this.groupBox_channel_5.Enabled = false;
             this.groupBox_channel_5.Location = new System.Drawing.Point(251, 292);
-            this.groupBox_channel_5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_5.Name = "groupBox_channel_5";
-            this.groupBox_channel_5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_5.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_5.Size = new System.Drawing.Size(157, 254);
             this.groupBox_channel_5.TabIndex = 6;
             this.groupBox_channel_5.TabStop = false;
@@ -919,7 +921,7 @@
             // tBox_CH5_SF
             // 
             this.tBox_CH5_SF.Location = new System.Drawing.Point(67, 227);
-            this.tBox_CH5_SF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH5_SF.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH5_SF.Name = "tBox_CH5_SF";
             this.tBox_CH5_SF.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH5_SF.TabIndex = 33;
@@ -948,7 +950,7 @@
             // tBox_CH5_FOGID
             // 
             this.tBox_CH5_FOGID.Location = new System.Drawing.Point(67, 29);
-            this.tBox_CH5_FOGID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH5_FOGID.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH5_FOGID.Name = "tBox_CH5_FOGID";
             this.tBox_CH5_FOGID.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH5_FOGID.TabIndex = 31;
@@ -962,7 +964,7 @@
             "none",
             "even"});
             this.cBox_CH5_ParityBit.Location = new System.Drawing.Point(67, 197);
-            this.cBox_CH5_ParityBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH5_ParityBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH5_ParityBit.Name = "cBox_CH5_ParityBit";
             this.cBox_CH5_ParityBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH5_ParityBit.TabIndex = 4;
@@ -986,7 +988,7 @@
             "1.5",
             "2"});
             this.cBox_CH5_StopBit.Location = new System.Drawing.Point(67, 163);
-            this.cBox_CH5_StopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH5_StopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH5_StopBit.Name = "cBox_CH5_StopBit";
             this.cBox_CH5_StopBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH5_StopBit.TabIndex = 3;
@@ -1009,7 +1011,7 @@
             "8",
             "9"});
             this.cBox_CH5_DataBit.Location = new System.Drawing.Point(67, 130);
-            this.cBox_CH5_DataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH5_DataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH5_DataBit.Name = "cBox_CH5_DataBit";
             this.cBox_CH5_DataBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH5_DataBit.TabIndex = 2;
@@ -1040,7 +1042,7 @@
             "614400",
             "921600"});
             this.cBox_CH5_BaudRate.Location = new System.Drawing.Point(67, 97);
-            this.cBox_CH5_BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH5_BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH5_BaudRate.Name = "cBox_CH5_BaudRate";
             this.cBox_CH5_BaudRate.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH5_BaudRate.TabIndex = 1;
@@ -1059,7 +1061,7 @@
             // 
             this.cBox_CH5_COMID.FormattingEnabled = true;
             this.cBox_CH5_COMID.Location = new System.Drawing.Point(67, 63);
-            this.cBox_CH5_COMID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH5_COMID.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH5_COMID.Name = "cBox_CH5_COMID";
             this.cBox_CH5_COMID.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH5_COMID.TabIndex = 0;
@@ -1082,9 +1084,9 @@
             this.groupBox_channel_2.Controls.Add(this.cBox_CH2_COMID);
             this.groupBox_channel_2.Enabled = false;
             this.groupBox_channel_2.Location = new System.Drawing.Point(485, 23);
-            this.groupBox_channel_2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_2.Name = "groupBox_channel_2";
-            this.groupBox_channel_2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_2.Size = new System.Drawing.Size(157, 254);
             this.groupBox_channel_2.TabIndex = 7;
             this.groupBox_channel_2.TabStop = false;
@@ -1113,7 +1115,7 @@
             // tBox_CH2_SF
             // 
             this.tBox_CH2_SF.Location = new System.Drawing.Point(63, 225);
-            this.tBox_CH2_SF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH2_SF.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH2_SF.Name = "tBox_CH2_SF";
             this.tBox_CH2_SF.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH2_SF.TabIndex = 26;
@@ -1132,7 +1134,7 @@
             // tBox_CH2_FOGID
             // 
             this.tBox_CH2_FOGID.Location = new System.Drawing.Point(63, 24);
-            this.tBox_CH2_FOGID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH2_FOGID.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH2_FOGID.Name = "tBox_CH2_FOGID";
             this.tBox_CH2_FOGID.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH2_FOGID.TabIndex = 24;
@@ -1146,7 +1148,7 @@
             "none",
             "even"});
             this.cBox_CH2_ParityBit.Location = new System.Drawing.Point(63, 189);
-            this.cBox_CH2_ParityBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH2_ParityBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH2_ParityBit.Name = "cBox_CH2_ParityBit";
             this.cBox_CH2_ParityBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH2_ParityBit.TabIndex = 4;
@@ -1170,7 +1172,7 @@
             "1.5",
             "2"});
             this.cBox_CH2_StopBit.Location = new System.Drawing.Point(63, 156);
-            this.cBox_CH2_StopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH2_StopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH2_StopBit.Name = "cBox_CH2_StopBit";
             this.cBox_CH2_StopBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH2_StopBit.TabIndex = 3;
@@ -1193,7 +1195,7 @@
             "8",
             "9"});
             this.cBox_CH2_DataBit.Location = new System.Drawing.Point(63, 123);
-            this.cBox_CH2_DataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH2_DataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH2_DataBit.Name = "cBox_CH2_DataBit";
             this.cBox_CH2_DataBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH2_DataBit.TabIndex = 2;
@@ -1224,7 +1226,7 @@
             "614400",
             "921600"});
             this.cBox_CH2_BaudRate.Location = new System.Drawing.Point(63, 91);
-            this.cBox_CH2_BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH2_BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH2_BaudRate.Name = "cBox_CH2_BaudRate";
             this.cBox_CH2_BaudRate.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH2_BaudRate.TabIndex = 1;
@@ -1243,7 +1245,7 @@
             // 
             this.cBox_CH2_COMID.FormattingEnabled = true;
             this.cBox_CH2_COMID.Location = new System.Drawing.Point(63, 58);
-            this.cBox_CH2_COMID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH2_COMID.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH2_COMID.Name = "cBox_CH2_COMID";
             this.cBox_CH2_COMID.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH2_COMID.TabIndex = 0;
@@ -1263,7 +1265,7 @@
             "通道五",
             "通道六"});
             this.checkedListBox_Channel.Location = new System.Drawing.Point(717, 330);
-            this.checkedListBox_Channel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkedListBox_Channel.Margin = new System.Windows.Forms.Padding(2);
             this.checkedListBox_Channel.Name = "checkedListBox_Channel";
             this.checkedListBox_Channel.Size = new System.Drawing.Size(102, 112);
             this.checkedListBox_Channel.TabIndex = 8;
@@ -1287,9 +1289,9 @@
             this.groupBox_channel_6.Controls.Add(this.cBox_CH6_COMID);
             this.groupBox_channel_6.Enabled = false;
             this.groupBox_channel_6.Location = new System.Drawing.Point(485, 292);
-            this.groupBox_channel_6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_6.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_6.Name = "groupBox_channel_6";
-            this.groupBox_channel_6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox_channel_6.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox_channel_6.Size = new System.Drawing.Size(157, 254);
             this.groupBox_channel_6.TabIndex = 27;
             this.groupBox_channel_6.TabStop = false;
@@ -1318,7 +1320,7 @@
             // tBox_CH6_SF
             // 
             this.tBox_CH6_SF.Location = new System.Drawing.Point(63, 227);
-            this.tBox_CH6_SF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH6_SF.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH6_SF.Name = "tBox_CH6_SF";
             this.tBox_CH6_SF.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH6_SF.TabIndex = 28;
@@ -1342,7 +1344,7 @@
             "none",
             "even"});
             this.cBox_CH6_ParityBit.Location = new System.Drawing.Point(63, 193);
-            this.cBox_CH6_ParityBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH6_ParityBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH6_ParityBit.Name = "cBox_CH6_ParityBit";
             this.cBox_CH6_ParityBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH6_ParityBit.TabIndex = 4;
@@ -1350,7 +1352,7 @@
             // tBox_CH6_FOGID
             // 
             this.tBox_CH6_FOGID.Location = new System.Drawing.Point(63, 29);
-            this.tBox_CH6_FOGID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tBox_CH6_FOGID.Margin = new System.Windows.Forms.Padding(2);
             this.tBox_CH6_FOGID.Name = "tBox_CH6_FOGID";
             this.tBox_CH6_FOGID.Size = new System.Drawing.Size(82, 21);
             this.tBox_CH6_FOGID.TabIndex = 31;
@@ -1375,7 +1377,7 @@
             "1.5",
             "2"});
             this.cBox_CH6_StopBit.Location = new System.Drawing.Point(63, 161);
-            this.cBox_CH6_StopBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH6_StopBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH6_StopBit.Name = "cBox_CH6_StopBit";
             this.cBox_CH6_StopBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH6_StopBit.TabIndex = 3;
@@ -1398,7 +1400,7 @@
             "8",
             "9"});
             this.cBox_CH6_DataBit.Location = new System.Drawing.Point(63, 128);
-            this.cBox_CH6_DataBit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH6_DataBit.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH6_DataBit.Name = "cBox_CH6_DataBit";
             this.cBox_CH6_DataBit.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH6_DataBit.TabIndex = 2;
@@ -1429,7 +1431,7 @@
             "614400",
             "921600"});
             this.cBox_CH6_BaudRate.Location = new System.Drawing.Point(63, 95);
-            this.cBox_CH6_BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH6_BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH6_BaudRate.Name = "cBox_CH6_BaudRate";
             this.cBox_CH6_BaudRate.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH6_BaudRate.TabIndex = 1;
@@ -1448,10 +1450,30 @@
             // 
             this.cBox_CH6_COMID.FormattingEnabled = true;
             this.cBox_CH6_COMID.Location = new System.Drawing.Point(63, 63);
-            this.cBox_CH6_COMID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cBox_CH6_COMID.Margin = new System.Windows.Forms.Padding(2);
             this.cBox_CH6_COMID.Name = "cBox_CH6_COMID";
             this.cBox_CH6_COMID.Size = new System.Drawing.Size(82, 20);
             this.cBox_CH6_COMID.TabIndex = 0;
+            // 
+            // checkBox_isHighFreq
+            // 
+            this.checkBox_isHighFreq.AutoSize = true;
+            this.checkBox_isHighFreq.Location = new System.Drawing.Point(684, 455);
+            this.checkBox_isHighFreq.Name = "checkBox_isHighFreq";
+            this.checkBox_isHighFreq.Size = new System.Drawing.Size(108, 16);
+            this.checkBox_isHighFreq.TabIndex = 30;
+            this.checkBox_isHighFreq.Text = "是否高采样保存";
+            this.checkBox_isHighFreq.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_isHexSave
+            // 
+            this.checkBox_isHexSave.AutoSize = true;
+            this.checkBox_isHexSave.Location = new System.Drawing.Point(684, 477);
+            this.checkBox_isHexSave.Name = "checkBox_isHexSave";
+            this.checkBox_isHexSave.Size = new System.Drawing.Size(132, 16);
+            this.checkBox_isHexSave.TabIndex = 31;
+            this.checkBox_isHexSave.Text = "是否保存16进制数据";
+            this.checkBox_isHexSave.UseVisualStyleBackColor = true;
             // 
             // SerialCfgDlg
             // 
@@ -1459,6 +1481,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(912, 570);
+            this.Controls.Add(this.checkBox_isHexSave);
+            this.Controls.Add(this.checkBox_isHighFreq);
             this.Controls.Add(this.groupBox_channel_6);
             this.Controls.Add(this.checkedListBox_Channel);
             this.Controls.Add(this.groupBox_channel_5);
@@ -1469,7 +1493,7 @@
             this.Controls.Add(this.groupBox_channel_3);
             this.Controls.Add(this.groupBox_channel_1);
             this.Controls.Add(this.groupBox_Table);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SerialCfgDlg";
             this.Text = "通道串口配置";
             this.groupBox_Table.ResumeLayout(false);
@@ -1487,6 +1511,7 @@
             this.groupBox_channel_6.ResumeLayout(false);
             this.groupBox_channel_6.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1598,5 +1623,7 @@
         private System.Windows.Forms.TextBox tBox_CH2_SF;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.TextBox tBox_CH6_SF;
+        private System.Windows.Forms.CheckBox checkBox_isHighFreq;
+        private System.Windows.Forms.CheckBox checkBox_isHexSave;
     }
 }

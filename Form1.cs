@@ -57,7 +57,7 @@ namespace FOGTestPlatform
         List<string> portIDList = new List<string>();
         List<string> ChannelList = new List<string>();
         ScaleFactorPara scaleFactorPara = new ScaleFactorPara();
-        bool isScaleFactorTest = false;
+        //bool isScaleFactorTest = false;
         bool ScaleFactorTestStart = false;
         bool SaveSFDataStart = false;
         //定义委托
@@ -132,6 +132,28 @@ namespace FOGTestPlatform
                 sheet.CreateRow(7).CreateCell(0).SetCellValue("通道六");
                 sheet.CreateRow(8).CreateCell(0).SetCellValue("测试通道数");
 
+                sheet.CreateRow(9).CreateCell(0).SetCellValue("环境信息");
+
+                sheet.CreateRow(10).CreateCell(0).SetCellValue("测试点纬度");
+                sheet.GetRow(10).CreateCell(1).SetCellValue("29.3935412777777");
+
+                sheet.CreateRow(11).CreateCell(0).SetCellValue("测试点经度");
+                sheet.GetRow(11).CreateCell(1).SetCellValue("106.275720083333");
+                
+                sheet.CreateRow(12).CreateCell(0).SetCellValue("测试点高度");
+                sheet.GetRow(12).CreateCell(1).SetCellValue("501");
+                
+                sheet.CreateRow(13).CreateCell(0).SetCellValue("测试点重力加速度");
+                sheet.GetRow(13).CreateCell(1).SetCellValue("9.8");
+
+                sheet.CreateRow(14).CreateCell(0).SetCellValue("采样频率");
+                sheet.GetRow(14).CreateCell(1).SetCellValue("1000");
+
+                sheet.CreateRow(15).CreateCell(0).SetCellValue("是否需要高采样率（计算Allan方差）");
+                sheet.GetRow(15).CreateCell(1).SetCellValue("False");
+
+                sheet.CreateRow(16).CreateCell(0).SetCellValue("是否保存16进制数据");
+                sheet.GetRow(16).CreateCell(1).SetCellValue("False");
                 sheet.SetColumnWidth(0, 12 * 256);
                 hsswfworkbook.Write(file);
                 file.Close();
@@ -333,8 +355,10 @@ namespace FOGTestPlatform
                 timePara.drawIndexTime[index]++;
                 if (!Channels_FogData_list[index].zoomed_flag)
                 {
-                    chart.ChartAreas[index].AxisY.Maximum  = Channels_FogData_list[index].fdata_1s_array.Max() + 100;
-                    chart.ChartAreas[index].AxisY.Minimum  = Channels_FogData_list[index].fdata_1s_array.Min() - 100;
+//                     chart.ChartAreas[index].AxisY.Maximum = Channels_FogData_list[index].fdata_1s_array.Average()+ CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 3 + 0.0001;
+//                     chart.ChartAreas[index].AxisY.Minimum = Channels_FogData_list[index].fdata_1s_array.Average()- CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 3 - 0.0001;
+                    chart.ChartAreas[index].AxisY.Maximum = Channels_FogData_list[index].fdata_1s_array.Max() + CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 0.1 + 0.0001;
+                    chart.ChartAreas[index].AxisY.Minimum = Channels_FogData_list[index].fdata_1s_array.Min() - CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 0.1 - 0.0001;
                     chart.ChartAreas[index].AxisY2.Maximum = Channels_FogData_list[index].tdata_1s_array.Max() + 1;
                     chart.ChartAreas[index].AxisY2.Minimum = Channels_FogData_list[index].tdata_1s_array.Min() - 1;
 
@@ -347,7 +371,7 @@ namespace FOGTestPlatform
                 }
                 chart.Series[2 * index].ChartArea = chart.ChartAreas[index].Name;
                 chart.Series[2 * index + 1].ChartArea = chart.ChartAreas[index].Name;
-                chart.Series[2 * index].Points.AddXY(timePara.drawIndexTime[index], Channels_FogData_list[index].d_fdata_1s);
+                chart.Series[2 * index].Points.AddXY(timePara.drawIndexTime[index], Channels_FogData_list[index].d_fdata_1s / Channels_FogData_list[index].scaleFactor * (testCfgPara.isScaleFactorTest ? 1 : 3600));
                 chart.Series[2 * index+1].Points.AddXY(timePara.drawIndexTime[index], Channels_FogData_list[index].d_tdata_1s);
             }
         }
@@ -421,7 +445,7 @@ namespace FOGTestPlatform
             portIDList.Clear();
             ISheet sht = workbook.GetSheet("通道串口配置");
             //配置转台参数
-            if (sht.GetRow(1).GetCell(1).ToString() == "True")
+            if (sht.GetRow(1).GetCell(1).ToString().ToLower() == "true")
             {
                 table_serial = SetSerialPara(0, sht);
                 testCfgPara.serialportEnable[0] = true;
@@ -435,10 +459,29 @@ namespace FOGTestPlatform
             channels_serial_list.Clear();
             portIDList.Clear();
             Channels_FogData_list.Clear();
+            //配置文件保存相关参数
+            if (GetCell(sht, 15, 1).ToString().ToLower() == "true")
+            {
+                testCfgPara.isHighFreq = true;
+            }
+            else
+            {
+                testCfgPara.isHighFreq = false;
+            }
+            if (GetCell(sht, 16, 1).ToString().ToLower() == "true")
+            {
+                testCfgPara.isSaveHex = true;
+            }
+            else
+            {
+                testCfgPara.isSaveHex = false;
+            }
+            //配置采样时间
+            timePara.sampleFreq = Convert.ToInt32(GetCell(sht, 14, 1).ToString());
             //配置各通道参数
             for (int i = 1; i <= 6; i++)
             {
-                if (sht.GetRow(i + 1).GetCell(1).ToString() == "True")
+                if (sht.GetRow(i + 1).GetCell(1).ToString().ToLower() == "true")
                 {
                     //MessageBox.Show(sht.GetRow(i + 1).GetCell(2).ToString());
                     if (sht.GetRow(i + 1).GetCell(2).ToString() == "null")
@@ -473,6 +516,7 @@ namespace FOGTestPlatform
                 Btn_Stop.Enabled = false;
             }
         }
+        
         /*************************************
         函数名：SetChannelPara
         创建日期：2019/11/06
@@ -562,15 +606,20 @@ namespace FOGTestPlatform
         *************************************/
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            if(testCfgPara.serialportEnable[0])
+            if(testCfgPara.serialportEnable[0]&&testCfgPara.isScaleFactorTest)
             {
                 if(table_serial.IsOpen)
                 {
                     table_serial.Close();
                 }
+                //table_serial.DataReceived -= null;
                 table_serial.DataReceived += new SerialDataReceivedEventHandler(tabledata_decode);
                 table_serial.Open();
                 Send_table_Connect();
+            }
+            if (!testCfgPara.isScaleFactorTest)
+            {
+                table_serial.Close();
             }
             Channels_Hex_SW_list.Clear();
             Channels_Data_SW_list.Clear();
@@ -591,9 +640,13 @@ namespace FOGTestPlatform
             foreach (var item in channels_serial_list)
             {
                 int index = portIDList.IndexOf(item.PortName);
-                Channels_Hex_SW_list.Add(new StreamWriter(FilePara.CurrentDirectory + @"\" + Channels_FogData_list[index].FOGID + "_HexData_" + timePara.testTimes.ToString() + ".hex"));
+                if (testCfgPara.isSaveHex)
+                {
+                    Channels_Hex_SW_list.Add(new StreamWriter(FilePara.CurrentDirectory + @"\" + Channels_FogData_list[index].FOGID + "_HexData_" + timePara.testTimes.ToString() + ".hex"));
+
+                }
                 Channels_Data_SW_list.Add(new StreamWriter(FilePara.CurrentDirectory + @"\" + Channels_FogData_list[index].FOGID + "_Data_" + timePara.testTimes.ToString() + ".dat"));
-                if (isScaleFactorTest)
+                if (testCfgPara.isScaleFactorTest)
                 {
                     Channels_SFData_SW_list.Add(new StreamWriter(FilePara.CurrentDirectory + @"\" + Channels_FogData_list[index].FOGID + "_SFData_" + timePara.testTimes.ToString() + ".dat"));
                 }
@@ -609,7 +662,11 @@ namespace FOGTestPlatform
             Btn_Start.Enabled = false;
             Btn_Stop.Enabled  = true;
             timePara.testTimes++;
-            
+            tBox_info.Text += "开始测试,";
+            if (testCfgPara.isHighFreq)
+            {
+                tBox_info.Text += "数据保存频率为";
+            }
         }
         /*************************************
         函数名：tabledata_decode
@@ -800,23 +857,38 @@ namespace FOGTestPlatform
                         fogdata.fdata_array.Add(fogdata.d_fdata);
                         fogdata.tdata_array.Add(fogdata.d_tdata);
                         fogdata.Counter++;
-                        SaveChannledata(serialPort.PortName);
+                        if (testCfgPara.isHighFreq)
+                        {
+                            SaveChannledata(serialPort.PortName);
+                        }
+                        
                         if (fogdata.Counter % timePara.sampleFreq == 0)
                         {
-                            fogdata.d_fdata_1s = fogdata.fdata_array.Average();
+                            fogdata.d_fdata_1s = fogdata.fdata_array.Sum();
                             fogdata.d_tdata_1s = fogdata.tdata_array.Average();
                             fogdata.time_array.Add(Convert.ToDouble(fogdata.Counter) / timePara.sampleFreq);
-                            fogdata.fdata_1s_array.Add(fogdata.d_fdata_1s);
+                            fogdata.fdata_1s_array.Add(fogdata.d_fdata_1s / fogdata.scaleFactor * (testCfgPara.isScaleFactorTest?1:3600));
                             fogdata.tdata_1s_array.Add(fogdata.d_tdata_1s);
                             fogdata.fdata_smooth_array = fogdata.fdata_1s_array;
                             fogdata.tdata_smooth_array = fogdata.tdata_1s_array;
                             fogdata.time_smooth_array.Add(fogdata.Counter / timePara.sampleFreq);
                             fogdata.ave_Fog_data = fogdata.fdata_1s_array.Average();
                             fogdata.std_Fog_data = CalculateStdDev(fogdata.fdata_1s_array);
-                            fogdata.Fog_Bias_std = fogdata.std_Fog_data / fogdata.scaleFactor *3600;
-                            fogdata.Fog_Comped_data = fogdata.d_fdata_1s / fogdata.scaleFactor * 3600;
+                            fogdata.Fog_Bias_std = fogdata.std_Fog_data;
+                            if (testCfgPara.isScaleFactorTest)
+                            {
+                                fogdata.Fog_Comped_data = fogdata.d_fdata_1s / fogdata.scaleFactor ;
+                            }
+                            else
+                            {
+                                fogdata.Fog_Comped_data = fogdata.fdata_1s_array.Average();
+                            }
                             fogdata.fdata_array.Clear();
                             fogdata.tdata_array.Clear();
+                            if (!testCfgPara.isHighFreq)
+                            {
+                                SaveChannledata(serialPort.PortName);
+                            }
                             this.BeginInvoke(updateDataFrm, serialPort.PortName);
                         }
                         fogdata.buffer.RemoveRange(0, 10);
@@ -852,49 +924,49 @@ namespace FOGTestPlatform
                 case "通道一":
                     {
                         tBox_ch1_currentdata.Text = Channels_FogData_list[index].d_fdata_1s.ToString();
-                        tBox_ch1_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString();
-                        tBox_ch1_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString();
-                        tBox_ch1_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString();
+                        tBox_ch1_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString("###0.000000");
+                        tBox_ch1_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString("###0.000000");
+                        tBox_ch1_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString("###0.0000");
                         break;
                     }
                 case "通道二":
                     {
                         tBox_ch2_currentdata.Text = Channels_FogData_list[index].d_fdata_1s.ToString();
-                        tBox_ch2_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString();
-                        tBox_ch2_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString();
-                        tBox_ch2_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString();
+                        tBox_ch2_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString("###0.000000");
+                        tBox_ch2_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString("###0.000000");
+                        tBox_ch2_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString("###0.0000");
                         break;
                     }
                 case "通道三":
                     {
                         tBox_ch3_currentdata.Text = Channels_FogData_list[index].d_fdata_1s.ToString();
-                        tBox_ch3_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString();
-                        tBox_ch3_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString();
-                        tBox_ch3_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString();
+                        tBox_ch3_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString("###0.000000");
+                        tBox_ch3_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString("###0.000000");
+                        tBox_ch3_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString("###0.0000");
                         break;
                     }
                 case "通道四":
                     {
                         tBox_ch4_currentdata.Text = Channels_FogData_list[index].d_fdata_1s.ToString();
-                        tBox_ch4_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString();
-                        tBox_ch4_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString();
-                        tBox_ch4_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString();
+                        tBox_ch4_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString("###0.000000");
+                        tBox_ch4_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString("###0.000000");
+                        tBox_ch4_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString("###0.0000");
                         break;
                     }
                 case "通道五":
                     {
                         tBox_ch5_currentdata.Text = Channels_FogData_list[index].d_fdata_1s.ToString();
-                        tBox_ch5_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString();
-                        tBox_ch5_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString();
-                        tBox_ch5_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString();
+                        tBox_ch5_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString("###0.000000");
+                        tBox_ch5_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString("###0.000000");
+                        tBox_ch5_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString("###0.0000");
                         break;
                     }
                 case "通道六":
                     {
                         tBox_ch6_currentdata.Text = Channels_FogData_list[index].d_fdata_1s.ToString();
-                        tBox_ch6_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString();
-                        tBox_ch6_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString();
-                        tBox_ch6_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString();
+                        tBox_ch6_Caltdata.Text    = Channels_FogData_list[index].Fog_Comped_data.ToString("###0.000000");
+                        tBox_ch6_stddata.Text     = Channels_FogData_list[index].Fog_Bias_std.ToString("###0.000000");
+                        tBox_ch6_temdata.Text     = Channels_FogData_list[index].d_tdata_1s.ToString("###0.0000");
                         break;
                     }
             }
@@ -931,15 +1003,27 @@ namespace FOGTestPlatform
         private void SaveChannledata(string PortName)
         {
             int index = portIDList.IndexOf(PortName);
-            for (int i = 0; i < Channels_FogData_list[index].arrayRCVData.Length; i++)
+            if (testCfgPara.isSaveHex)
             {
-                Channels_Hex_SW_list[index].Write(Channels_FogData_list[index].arrayRCVData[i].ToString("X2") + "\t");
+                for (int i = 0; i < Channels_FogData_list[index].arrayRCVData.Length; i++)
+                {
+                    Channels_Hex_SW_list[index].Write(Channels_FogData_list[index].arrayRCVData[i].ToString("X2") + "\t");
+                }
+                Channels_Hex_SW_list[index].Write("\n");
             }
-            Channels_Hex_SW_list[index].Write("\n");
+            
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0:0000000}", Convert.ToDouble(Channels_FogData_list[index].Counter) / timePara.sampleFreq);
-            sb.AppendFormat("\t{0:00000.00}", Channels_FogData_list[index].d_fdata);
-            sb.AppendFormat("\t{0:000.000}", Channels_FogData_list[index].d_tdata);
+            if (testCfgPara.isHighFreq)
+            {
+                sb.AppendFormat("\t{0:00000.00}", Channels_FogData_list[index].d_fdata);
+                sb.AppendFormat("\t{0:000.000}", Channels_FogData_list[index].d_tdata);
+            }
+            else
+            {
+                sb.AppendFormat("\t{0:00000.00}", Channels_FogData_list[index].d_fdata_1s);
+                sb.AppendFormat("\t{0:000.000}", Channels_FogData_list[index].d_tdata_1s);
+            }
             Channels_Data_SW_list[index].WriteLine(sb.ToString());
             sb.Clear();
             if(SaveSFDataStart)//tabledata.SF_Counter 转台一个数加1  100Hz
@@ -948,11 +1032,13 @@ namespace FOGTestPlatform
                 {
                     sb.AppendFormat("{0:0000000}", Convert.ToDouble(Channels_FogData_list[index].Counter) / timePara.sampleFreq);
                     sb.AppendFormat("\t{0:00000.00}", Channels_FogData_list[index].d_fdata);
+                    sb.AppendFormat("\t{0:000.000}", Channels_FogData_list[index].d_tdata);
                     sb.AppendFormat("\t{0:00000.00}", tabledata.table_rate);
                     sb.AppendFormat("\t{0:000}", tabledata.SF_Para_index );
+                    Channels_SFData_SW_list[index].WriteLine(sb.ToString());
+                    sb.Clear();
                 }
-                Channels_SFData_SW_list[index].WriteLine(sb.ToString());
-                sb.Clear();
+                
             }
             
         }
@@ -1106,9 +1192,12 @@ namespace FOGTestPlatform
             {
                 ConfigSerialPort();
             }
+             
+
             //标度因数试验参数设置
             DialogResult dr;
             ISheet shtCfg = workbook.GetSheet("通道串口配置");
+            timePara.sampleFreq = Convert.ToInt32(GetCell(shtCfg, 14, 1).ToString());
             dr = MessageBox.Show("需要导入标度因数测试的参数吗？", "确认对话框", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (dr == DialogResult.Yes)
             {
@@ -1119,7 +1208,7 @@ namespace FOGTestPlatform
                     {
                         ConfigSerialPort();
                     }
-                    
+                    testCfgPara.isHighFreq = false;
                 }
                 rfile = new FileStream(FilePara.ConfigFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 workbook = new XSSFWorkbook(rfile);
@@ -1193,10 +1282,11 @@ namespace FOGTestPlatform
                 //                 {
                 //                     scaleFactorPara.RatePara.Add(Convert.ToDouble(GetCell(sht, 3, i).ToString()));
                 //                 }
-                isScaleFactorTest = true;
+                testCfgPara.isScaleFactorTest = true;
             }
             else
             {
+                testCfgPara.isScaleFactorTest = false;
                 return;
             }
 
