@@ -116,6 +116,7 @@
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Btn_Stop = new System.Windows.Forms.Button();
             this.Btn_Start = new System.Windows.Forms.Button();
+            this.ToolStripMenuItemDeadbandTest = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox_FOGData_Panel.SuspendLayout();
             this.groupBox_tablePanel.SuspendLayout();
@@ -167,7 +168,8 @@
             // 
             this.试验配置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItem_SerialCfg,
-            this.试验设置ToolStripMenuItem});
+            this.试验设置ToolStripMenuItem,
+            this.ToolStripMenuItemDeadbandTest});
             this.试验配置ToolStripMenuItem.Name = "试验配置ToolStripMenuItem";
             this.试验配置ToolStripMenuItem.Size = new System.Drawing.Size(68, 22);
             this.试验配置ToolStripMenuItem.Text = "试验配置";
@@ -178,7 +180,7 @@
             this.ToolStripMenuItem_SerialCfgByFile,
             this.ToolStripMenuItem_SerialCfgByDialog});
             this.MenuItem_SerialCfg.Name = "MenuItem_SerialCfg";
-            this.MenuItem_SerialCfg.Size = new System.Drawing.Size(124, 22);
+            this.MenuItem_SerialCfg.Size = new System.Drawing.Size(180, 22);
             this.MenuItem_SerialCfg.Text = "串口配置";
             // 
             // ToolStripMenuItem_SerialCfgByFile
@@ -198,7 +200,7 @@
             // 试验设置ToolStripMenuItem
             // 
             this.试验设置ToolStripMenuItem.Name = "试验设置ToolStripMenuItem";
-            this.试验设置ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.试验设置ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.试验设置ToolStripMenuItem.Text = "试验设置";
             // 
             // 数据处理ToolStripMenuItem
@@ -981,6 +983,13 @@
             this.Btn_Start.UseVisualStyleBackColor = true;
             this.Btn_Start.Click += new System.EventHandler(this.Btn_Start_Click);
             // 
+            // ToolStripMenuItemDeadbandTest
+            // 
+            this.ToolStripMenuItemDeadbandTest.Name = "ToolStripMenuItemDeadbandTest";
+            this.ToolStripMenuItemDeadbandTest.Size = new System.Drawing.Size(180, 22);
+            this.ToolStripMenuItemDeadbandTest.Text = "死区测试";
+            this.ToolStripMenuItemDeadbandTest.Click += new System.EventHandler(this.ToolStripMenuItemDeadbandTest_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1109,6 +1118,7 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Button Btn_Smooth;
         private System.Windows.Forms.TextBox tBox_smoothTime;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemDeadbandTest;
     }
 }
 

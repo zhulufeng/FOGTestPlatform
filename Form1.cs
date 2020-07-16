@@ -357,10 +357,10 @@ namespace FOGTestPlatform
                 {
 //                     chart.ChartAreas[index].AxisY.Maximum = Channels_FogData_list[index].fdata_1s_array.Average()+ CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 3 + 0.0001;
 //                     chart.ChartAreas[index].AxisY.Minimum = Channels_FogData_list[index].fdata_1s_array.Average()- CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 3 - 0.0001;
-                    chart.ChartAreas[index].AxisY.Maximum = Channels_FogData_list[index].fdata_1s_array.Max() + CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 0.1 + 0.0001;
-                    chart.ChartAreas[index].AxisY.Minimum = Channels_FogData_list[index].fdata_1s_array.Min() - CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 0.1 - 0.0001;
-                    chart.ChartAreas[index].AxisY2.Maximum = Channels_FogData_list[index].tdata_1s_array.Max() + 1;
-                    chart.ChartAreas[index].AxisY2.Minimum = Channels_FogData_list[index].tdata_1s_array.Min() - 1;
+                    chart.ChartAreas[index].AxisY.Maximum = Channels_FogData_list[index].fdata_1s_array.ToArray().Max() + CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 0.1 + 0.0001;
+                    chart.ChartAreas[index].AxisY.Minimum = Channels_FogData_list[index].fdata_1s_array.ToArray().Min() - CalculateStdDev(Channels_FogData_list[index].fdata_1s_array) * 0.1 - 0.0001;
+                    chart.ChartAreas[index].AxisY2.Maximum = Channels_FogData_list[index].tdata_1s_array.ToArray().Max() + 1;
+                    chart.ChartAreas[index].AxisY2.Minimum = Channels_FogData_list[index].tdata_1s_array.ToArray().Min() - 1;
 
                     chart.ChartAreas[index].AxisX.Interval           = (Channels_FogData_list[index].fdata_1s_array.Count / 20 + 1);
                     chart.ChartAreas[index].AxisX.ScaleView.Size     = Channels_FogData_list[index].fdata_1s_array.Count * 1.1;
@@ -382,15 +382,15 @@ namespace FOGTestPlatform
 //             chart.Series[2 * index + 1].Points.Clear(); 
             if (!Channels_FogData_list[index].zoomed_flag)
             {
-                chart.ChartAreas[index].AxisY.Maximum            = Channels_FogData_list[index].fdata_smooth_array.Max() + 100;
-                chart.ChartAreas[index].AxisY.Minimum            = Channels_FogData_list[index].fdata_smooth_array.Min() - 100;
-                chart.ChartAreas[index].AxisY2.Maximum           = Channels_FogData_list[index].tdata_smooth_array.Max() + 1;
-                chart.ChartAreas[index].AxisY2.Minimum           = Channels_FogData_list[index].tdata_smooth_array.Min() - 1;
+                chart.ChartAreas[index].AxisY.Maximum            = Channels_FogData_list[index].fdata_smooth_array.ToArray().Max() + 100;
+                chart.ChartAreas[index].AxisY.Minimum            = Channels_FogData_list[index].fdata_smooth_array.ToArray().Min() - 100;
+                chart.ChartAreas[index].AxisY2.Maximum           = Channels_FogData_list[index].tdata_smooth_array.ToArray().Max() + 1;
+                chart.ChartAreas[index].AxisY2.Minimum           = Channels_FogData_list[index].tdata_smooth_array.ToArray().Min() - 1;
 
-                chart.ChartAreas[index].AxisX.Interval           = (Channels_FogData_list[index].time_smooth_array.Max() / 20 + 1);
-                chart.ChartAreas[index].AxisX.ScaleView.Size     = Channels_FogData_list[index].time_smooth_array.Max();
-                chart.ChartAreas[index].AxisX.Minimum            = Channels_FogData_list[index].time_smooth_array.Min();
-                chart.ChartAreas[index].AxisX.Maximum            = Channels_FogData_list[index].time_smooth_array.Max();
+                chart.ChartAreas[index].AxisX.Interval           = (Channels_FogData_list[index].time_smooth_array.ToArray().Max() / 20 + 1);
+                chart.ChartAreas[index].AxisX.ScaleView.Size     = Channels_FogData_list[index].time_smooth_array.ToArray().Max();
+                chart.ChartAreas[index].AxisX.Minimum            = Channels_FogData_list[index].time_smooth_array.ToArray().Min();
+                chart.ChartAreas[index].AxisX.Maximum            = Channels_FogData_list[index].time_smooth_array.ToArray().Max();
                 chart.ChartAreas[index].AxisX.ScaleView.Position = 0.0;
                 chart.ChartAreas[index].CursorX.SelectionStart   = chart.ChartAreas[index].CursorX.SelectionEnd = 0.0;
                 chart.ChartAreas[index].CursorX.Position         = -1;
@@ -864,15 +864,15 @@ namespace FOGTestPlatform
                         
                         if (fogdata.Counter % timePara.sampleFreq == 0)
                         {
-                            fogdata.d_fdata_1s = fogdata.fdata_array.Sum();
-                            fogdata.d_tdata_1s = fogdata.tdata_array.Average();
+                            fogdata.d_fdata_1s = fogdata.fdata_array.ToArray().Sum();
+                            fogdata.d_tdata_1s = fogdata.tdata_array.ToArray().Average();
                             fogdata.time_array.Add(Convert.ToDouble(fogdata.Counter) / timePara.sampleFreq);
                             fogdata.fdata_1s_array.Add(fogdata.d_fdata_1s / fogdata.scaleFactor * (testCfgPara.isScaleFactorTest?1:3600));
                             fogdata.tdata_1s_array.Add(fogdata.d_tdata_1s);
                             fogdata.fdata_smooth_array = fogdata.fdata_1s_array;
                             fogdata.tdata_smooth_array = fogdata.tdata_1s_array;
                             fogdata.time_smooth_array.Add(fogdata.Counter / timePara.sampleFreq);
-                            fogdata.ave_Fog_data = fogdata.fdata_1s_array.Average();
+                            fogdata.ave_Fog_data = fogdata.fdata_1s_array.ToArray().Average();
                             fogdata.std_Fog_data = CalculateStdDev(fogdata.fdata_1s_array);
                             fogdata.Fog_Bias_std = fogdata.std_Fog_data;
                             if (testCfgPara.isScaleFactorTest)
@@ -881,7 +881,7 @@ namespace FOGTestPlatform
                             }
                             else
                             {
-                                fogdata.Fog_Comped_data = fogdata.fdata_1s_array.Average();
+                                fogdata.Fog_Comped_data = fogdata.fdata_1s_array.ToArray().Average();
                             }
                             fogdata.fdata_array.Clear();
                             fogdata.tdata_array.Clear();
@@ -982,10 +982,12 @@ namespace FOGTestPlatform
         private double CalculateStdDev(List<double> value)
         {
             double std_data = 0.0;
+            double ave_data = 0.0;
+            double sum_data = 0.0;
             if (value.Count > 1)
             {
-                double ave_data = value.Average();
-                double sum_data = value.Sum(data => Math.Pow((data - ave_data), 2));
+                ave_data = value.ToArray().Average();
+                sum_data = value.ToArray().Sum(data => Math.Pow((data - ave_data), 2));
                 std_data = Math.Sqrt(sum_data / (value.Count - 1));
 
             }
@@ -1672,6 +1674,15 @@ namespace FOGTestPlatform
             Sendbuff[13] = Convert.ToByte(checksum & 0xff);
             table_serial.Write(Sendbuff, 0, 14);
             tBox_info.Text += DateTime.Now.ToString("yyyyMMdd-HHmmss") + ":  发送转台摇摆指令！角度为：" + tBox_SetpRate_angle.Text + ", 频率为：" + tBox_SetpRate_rate.Text + "\r\n";
+        }
+
+        private void ToolStripMenuItemDeadbandTest_Click(object sender, EventArgs e)
+        {
+            DeadbandDlg deadbandDlg = new DeadbandDlg();
+            if (deadbandDlg.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("Hello World!");
+            }
         }
     }
     

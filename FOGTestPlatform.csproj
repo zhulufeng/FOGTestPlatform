@@ -62,6 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeadbandDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeadbandDlg.Designer.cs">
+      <DependentUpon>DeadbandDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +89,9 @@
     <Compile Include="SerialCfgDlg.Designer.cs">
       <DependentUpon>SerialCfgDlg.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DeadbandDlg.resx">
+      <DependentUpon>DeadbandDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
