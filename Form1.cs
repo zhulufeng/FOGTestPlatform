@@ -44,6 +44,8 @@ namespace FOGTestPlatform
         List<StreamWriter> Channels_Hex_SW_list = new List<StreamWriter>();
         List<StreamWriter> Channels_Data_SW_list = new List<StreamWriter>();
         List<StreamWriter> Channels_SFData_SW_list = new List<StreamWriter>();
+        List<StreamWriter> Channels_DeadBandData_SW_list = new List<StreamWriter>();
+        List<StreamWriter> Channels_DeadBandDataResult_SW_list = new List<StreamWriter>();
         List<string> Channels_portName_list = new List<string>();
         List<Fogdata> Channels_FogData_list = new List<Fogdata>();
         List<StreamReader> Channel_DataFile_SR_list = new List<StreamReader>();
@@ -54,12 +56,18 @@ namespace FOGTestPlatform
         TestCfgPara testCfgPara = new TestCfgPara();//测试配置参数
         TableData tabledata = new TableData();
         TimePara timePara = new TimePara();
+        DeadBandPara deadBandPara = new DeadBandPara();
         List<string> portIDList = new List<string>();
         List<string> ChannelList = new List<string>();
         ScaleFactorPara scaleFactorPara = new ScaleFactorPara();
         //bool isScaleFactorTest = false;
         bool ScaleFactorTestStart = false;
         bool SaveSFDataStart = false;
+
+        bool DeadBandTestStart = false;
+        bool isStartAngleSended = false;
+        bool SaveDeadBandDataStart = false;
+        bool DeadBandBufferStart = false;
         //定义委托
         delegate void UpdateTableFrmEventHandle(bool isinfotBox,string text);
         delegate void UpdateDataFrmEventHandle(string portName);
@@ -606,7 +614,7 @@ namespace FOGTestPlatform
         *************************************/
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            if(testCfgPara.serialportEnable[0]&&testCfgPara.isScaleFactorTest)
+            if (testCfgPara.serialportEnable[0] && (testCfgPara.isScaleFactorTest||testCfgPara.isDeadBandTest))
             {
                 if(table_serial.IsOpen)
                 {
@@ -617,7 +625,12 @@ namespace FOGTestPlatform
                 table_serial.Open();
                 Send_table_Connect();
             }
-            if (!testCfgPara.isScaleFactorTest)
+            if (!testCfgPara.serialportEnable[0] && (testCfgPara.isScaleFactorTest || testCfgPara.isDeadBandTest))
+            {
+                MessageBox.Show("标度或者死区测试需要使能转台串口，请重新配置！");
+                return;
+            }
+            if (!testCfgPara.isScaleFactorTest&&!testCfgPara.isDeadBandTest)
             {
                 table_serial.Close();
             }
@@ -650,6 +663,11 @@ namespace FOGTestPlatform
                 {
                     Channels_SFData_SW_list.Add(new StreamWriter(FilePara.CurrentDirectory + @"\" + Channels_FogData_list[index].FOGID + "_SFData_" + timePara.testTimes.ToString() + ".dat"));
                 }
+                if (testCfgPara.isDeadBandTest)
+                {
+                    Channels_DeadBandData_SW_list.Add(new StreamWriter(FilePara.CurrentDirectory + @"\" + Channels_FogData_list[index].FOGID + "_DeadBandData_" + timePara.testTimes.ToString() + ".dat"));
+                    Channels_DeadBandDataResult_SW_list.Add(new StreamWriter(FilePara.CurrentDirectory + @"\" + Channels_FogData_list[index].FOGID + "_DeadBandResultData_" + timePara.testTimes.ToString() + ".dat"));
+                }
                 timePara.drawIndexTime.Add(0);
                 if (item.IsOpen)
                 {
@@ -658,7 +676,14 @@ namespace FOGTestPlatform
                 item.DataReceived += new SerialDataReceivedEventHandler(channeldata_decode);
                 item.Open();//需要判断串口是否有
             }
-            ScaleFactorTestStart = true;
+            if (testCfgPara.isScaleFactorTest)
+            {
+                ScaleFactorTestStart = true;
+            }
+            if (testCfgPara.isDeadBandTest)
+            {
+                DeadBandTestStart = true;
+            }
             Btn_Start.Enabled = false;
             Btn_Stop.Enabled  = true;
             timePara.testTimes++;
@@ -719,7 +744,7 @@ namespace FOGTestPlatform
                         }
                         if(ScaleFactorTestStart)
                         {
-                            if (tabledata.SF_Counter == (tabledata.SF_Para_index + 1) * timePara.sampleTime + (tabledata.SF_Para_index)*timePara.switchRateTime && tabledata.SF_Para_index < scaleFactorPara.paracount)//paracount  转速合计
+                            if ((tabledata.SF_Counter == (tabledata.SF_Para_index + 1) * timePara.sampleTime + (tabledata.SF_Para_index)*timePara.switchRateTime) && tabledata.SF_Para_index < scaleFactorPara.paracount)//paracount  转速合计
                             {
                                 int drate;
                                 if (Math.Abs(scaleFactorPara.RatePara[tabledata.SF_Para_index]) < 50)
@@ -753,7 +778,46 @@ namespace FOGTestPlatform
                             }
 
                             tabledata.SF_Counter++;
-
+                        }
+                        //死区测试转台指令
+                        if (DeadBandTestStart)
+                        {
+                            if(tabledata.SF_Counter < 500)
+                            {
+                                if(!isStartAngleSended)
+                                {
+                                    Send_table_AngleCommand(deadBandPara.StartAgl, 100);
+                                    deadBandPara.currentAgl = deadBandPara.StartAgl;
+                                    deadBandPara.step_num = Convert.ToInt32(Math.Abs((deadBandPara.StartAgl - deadBandPara.EndAgl) / deadBandPara.AglStep));
+                                    isStartAngleSended = true;
+                                }
+                            }
+                            if (((tabledata.SF_Counter - 500) == ((tabledata.SF_Para_index + 1) * deadBandPara.StepTime  + (tabledata.SF_Para_index) * deadBandPara.DeadBandswtichAngleTime )) && tabledata.SF_Para_index < deadBandPara.step_num)
+                            {
+//                                 foreach (var item in Channels_FogData_list)
+//                                 {
+//                                     int index = portIDList.IndexOf(item.Fog_PortName);
+//                                     StringBuilder sb = new StringBuilder();
+//                                     sb.AppendFormat("\t{0:00000.00}", deadBandPara.currentAgl);
+//                                     sb.AppendFormat("\t{0:000.000}", Channels_FogData_list[index].fdata_deadband_1s_array.ToArray().Average());
+//                                     sb.AppendFormat("\t{0:000.00}", deadBandPara.currentAgl);
+//                                     sb.AppendFormat("\t{0:000.00}", tabledata.table_angle);
+//                                     sb.AppendFormat("\t{0:000}", tabledata.SF_Para_index);
+//                                     tBox_info.Text += "角度为：" + deadBandPara.currentAgl.ToString() + "：" + Channels_FogData_list[index].FOGID + "的输出是：" + 
+//                                         Channels_FogData_list[index].fdata_deadband_1s_array.ToArray().Average().ToString() + "\r\n";
+//                                     Channels_DeadBandDataResult_SW_list[index].WriteLine(sb.ToString());
+//                                     sb.Clear();
+// 
+//                                     Channels_FogData_list[index].fdata_deadband_1s_array.Clear();
+//                                     
+//                                 }
+                                Send_table_stepCommand(deadBandPara.AglStep, 10);
+                                DeadBandBufferStart = false;
+                                deadBandPara.currentAgl += deadBandPara.AglStep;
+                                tabledata.SF_Para_index++;
+                                SaveDeadBandDataStart = true;
+                            }
+                            tabledata.SF_Counter++;
                         }
                         table_serialData.buffer.RemoveRange(0, 13);
                     }
@@ -868,6 +932,11 @@ namespace FOGTestPlatform
                             fogdata.d_tdata_1s = fogdata.tdata_array.ToArray().Average();
                             fogdata.time_array.Add(Convert.ToDouble(fogdata.Counter) / timePara.sampleFreq);
                             fogdata.fdata_1s_array.Add(fogdata.d_fdata_1s / fogdata.scaleFactor * (testCfgPara.isScaleFactorTest?1:3600));
+                            if (DeadBandBufferStart)
+                            {
+                                fogdata.fdata_deadband_1s_array.Add(fogdata.d_fdata_1s / fogdata.scaleFactor * (testCfgPara.isScaleFactorTest ? 1 : 3600));
+                            }
+                            
                             fogdata.tdata_1s_array.Add(fogdata.d_tdata_1s);
                             fogdata.fdata_smooth_array = fogdata.fdata_1s_array;
                             fogdata.tdata_smooth_array = fogdata.tdata_1s_array;
@@ -1042,6 +1111,20 @@ namespace FOGTestPlatform
                 }
                 
             }
+            if (SaveDeadBandDataStart)
+            {
+                if ((tabledata.SF_Counter - 500) >= ((tabledata.SF_Para_index) * deadBandPara.StepTime + (tabledata.SF_Para_index) * deadBandPara.DeadBandswtichAngleTime))
+                {
+                    DeadBandBufferStart = true;
+                    sb.AppendFormat("{0:0000000}", Convert.ToDouble(Channels_FogData_list[index].Counter) / timePara.sampleFreq);
+                    sb.AppendFormat("\t{0:00000.00}", Channels_FogData_list[index].d_fdata);
+                    sb.AppendFormat("\t{0:000.000}", Channels_FogData_list[index].d_tdata);
+                    sb.AppendFormat("\t{0:000.00}", tabledata.table_angle);
+                    sb.AppendFormat("\t{0:000}", tabledata.SF_Para_index);
+                    Channels_DeadBandData_SW_list[index].WriteLine(sb.ToString());
+                    sb.Clear();
+                }
+            }
             
         }
 
@@ -1059,7 +1142,17 @@ namespace FOGTestPlatform
             {
                 item.Close();
             }
-            
+
+
+            testCfgPara.isScaleFactorTest = false;
+            testCfgPara.isDeadBandTest = false;
+            DeadBandTestStart = false;
+            isStartAngleSended = false;
+            SaveDeadBandDataStart = false;
+
+            ScaleFactorTestStart = false;
+            DeadBandTestStart = false;
+
             Btn_Start.Enabled = true;
             Btn_Stop.Enabled  = false;
         }
@@ -1194,8 +1287,13 @@ namespace FOGTestPlatform
             {
                 ConfigSerialPort();
             }
-             
-
+            //读取死区测试参数
+            ISheet deadbandsht = workbook.GetSheet("死区测试");
+            deadBandPara.StartAgl = Convert.ToDouble(GetCell(deadbandsht, 3, 1).ToString());
+            deadBandPara.EndAgl = Convert.ToDouble(GetCell(deadbandsht, 3, 3).ToString());
+            deadBandPara.AglStep = Convert.ToDouble(GetCell(deadbandsht, 3, 5).ToString());
+            deadBandPara.StepTime = Convert.ToInt32(GetCell(deadbandsht, 3, 7).ToString()) * 100;
+            
             //标度因数试验参数设置
             DialogResult dr;
             ISheet shtCfg = workbook.GetSheet("通道串口配置");
@@ -1250,6 +1348,7 @@ namespace FOGTestPlatform
                     }
                     tBox_info.Text += "\r\n";
                     tBox_info.Text += "总共有：" + scaleFactorPara.RatePara.Count.ToString() + "个转速\r\n";
+                    scaleFactorPara.paracount = scaleFactorPara.RatePara.Count;
                 }
                 else
                 {
@@ -1277,6 +1376,7 @@ namespace FOGTestPlatform
                         }
                         tBox_info.Text += "\r\n";
                         tBox_info.Text += "总共有：" + scaleFactorPara.RatePara.Count.ToString() + "个转速\r\n";
+                        scaleFactorPara.paracount = scaleFactorPara.RatePara.Count;
                     }
                     //tBox_info.Text += "转速好像有点不对称？\n";
                 }
@@ -1522,6 +1622,74 @@ namespace FOGTestPlatform
             this.BeginInvoke(updateTableFrmdata, true,info_text);
 
         }
+
+        public void Send_table_stepCommand(double dangle, double drate)
+        {
+            byte[] Sendbuff = new byte[15];
+            int angle;
+            int rate;
+            int checksum = 0;
+            angle = Convert.ToInt32(dangle * 10000);
+            rate = Convert.ToInt32(drate * 10000);
+            Sendbuff[0] = 0xAA;
+            Sendbuff[1] = 0xA5;
+            Sendbuff[2] = 0x55;
+
+            Sendbuff[3] = 0x12;
+            Sendbuff[4] = Convert.ToByte( angle & 0xff);
+            Sendbuff[5] = Convert.ToByte((angle >> 8) & 0xff);
+            Sendbuff[6] = Convert.ToByte((angle >> 16) & 0xff);
+            Sendbuff[7] = Convert.ToByte((angle >> 24) & 0xff);
+            Sendbuff[8] = 0x00;
+            Sendbuff[9] = Convert.ToByte(  rate & 0xff);
+            Sendbuff[10] = Convert.ToByte((rate >> 8) & 0xff);
+            Sendbuff[11] = Convert.ToByte((rate >> 16) & 0xff);
+            Sendbuff[12] = Convert.ToByte((rate >> 24) & 0xff);
+
+            for (int i = 0; i < 13; i++)
+            {
+                checksum += Sendbuff[i];
+            }
+            Sendbuff[13] = Convert.ToByte(checksum & 0xff);
+            table_serial.Write(Sendbuff, 0, 14);
+            string info_text = DateTime.Now.ToString("yyyyMMdd-HHmmss") + ":  发送转台点动指令！角度增量为：" + dangle.ToString() + ", 速率为：" + drate.ToString() + "目标角度是：" 
+                +( deadBandPara.currentAgl + deadBandPara.AglStep).ToString("###0.00")+"\r\n";
+            this.BeginInvoke(updateTableFrmdata, true, info_text);
+        }
+
+        public void Send_table_AngleCommand(double dangle, double drate)
+        {
+            byte[] Sendbuff = new byte[15];
+            int angle;
+            int rate;
+            int checksum = 0;
+            angle = Convert.ToInt32(Convert.ToDouble(dangle) * 10000);
+            rate = Convert.ToInt32(Convert.ToDouble(drate) * 10000);
+            Sendbuff[0] = 0xAA;
+            Sendbuff[1] = 0xA5;
+            Sendbuff[2] = 0x55;
+
+            Sendbuff[3] = 0x11;
+            Sendbuff[4] = Convert.ToByte(angle & 0xff);
+            Sendbuff[5] = Convert.ToByte((angle >> 8) & 0xff);
+            Sendbuff[6] = Convert.ToByte((angle >> 16) & 0xff);
+            Sendbuff[7] = Convert.ToByte((angle >> 24) & 0xff);
+            Sendbuff[8] = 0xA0;
+            Sendbuff[9] = Convert.ToByte(rate & 0xff);
+            Sendbuff[10] = Convert.ToByte((rate >> 8) & 0xff);
+            Sendbuff[11] = Convert.ToByte((rate >> 16) & 0xff);
+            Sendbuff[12] = Convert.ToByte((rate >> 24) & 0xff);
+
+            for (int i = 0; i < 13; i++)
+            {
+                checksum += Sendbuff[i];
+            }
+            Sendbuff[13] = Convert.ToByte(checksum & 0xff);
+            table_serial.Write(Sendbuff, 0, 14);
+            string info_text = DateTime.Now.ToString("yyyyMMdd-HHmmss") + ":  发送转台角度指令！角度为：" + dangle + ", 速率为：" + drate + "\r\n";
+            this.BeginInvoke(updateTableFrmdata, true, info_text);
+        }
+
         /*************************************
        函数名：GetCell
        创建日期：2019/10/25
@@ -1628,7 +1796,7 @@ namespace FOGTestPlatform
             Sendbuff[2] = 0x55;
 
             Sendbuff[3] = 0x12;
-            Sendbuff[4] = Convert.ToByte(rate & 0xff);
+            Sendbuff[4] = Convert.ToByte( rate & 0xff);
             Sendbuff[5] = Convert.ToByte((rate >> 8) & 0xff);
             Sendbuff[6] = Convert.ToByte((rate >> 16) & 0xff);
             Sendbuff[7] = Convert.ToByte((rate >> 24) & 0xff);
@@ -1678,10 +1846,45 @@ namespace FOGTestPlatform
 
         private void ToolStripMenuItemDeadbandTest_Click(object sender, EventArgs e)
         {
-            DeadbandDlg deadbandDlg = new DeadbandDlg();
+            DeadbandDlg deadbandDlg = new DeadbandDlg(deadBandPara);
             if (deadbandDlg.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Hello World!");
+
+                deadBandPara = deadbandDlg.LocaldeadBandPara;
+                tBox_info.Text += DateTime.Now.ToString("yyyyMMdd-HHmmss") + ":  死区测试起始角度为：" + deadBandPara.StartAgl.ToString() + ", 结束角度为：" + deadBandPara.EndAgl.ToString() +
+                    ", 步进角度为：" + deadBandPara.AglStep.ToString() + ", 采集时间为：" + (deadBandPara.StepTime/100).ToString() +"\r\n";
+                //读取现有配置文件
+                FileStream rfile = new FileStream(FilePara.ConfigFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                XSSFWorkbook workbook = new XSSFWorkbook(rfile);
+                rfile.Close();
+
+                ISheet deadbandsht = workbook.GetSheet("死区测试");
+                ICell cell = GetCell(deadbandsht, 3, 1);
+                cell.SetCellValue(deadBandPara.StartAgl.ToString());
+                cell = GetCell(deadbandsht, 3, 3);
+                cell.SetCellValue(deadBandPara.EndAgl.ToString());
+                cell = GetCell(deadbandsht, 3, 5);
+                cell.SetCellValue(deadBandPara.AglStep.ToString());
+                cell = GetCell(deadbandsht, 3,7);
+                cell.SetCellValue((deadBandPara.StepTime/100).ToString());
+                //写入配置文件
+                //            FileStream wfile = new FileStream(FilePara.ConfigFilePath, FileMode.Open, FileAccess.ReadWrite);
+                FileStream wfile = new FileStream(FilePara.ConfigFilePath, FileMode.Create);
+                workbook.Write(wfile);
+                wfile.Close();
+                if(Math.Abs(deadBandPara.AglStep) < 1e-5)
+                {
+                    MessageBox.Show("角度增量太小，需要重新设置死区测试参数！");
+                    return;
+                }
+                if ((deadBandPara.EndAgl - deadBandPara.StartAgl) / deadBandPara.AglStep <= 0)
+                {
+                    MessageBox.Show("起始角度和结束角度与角度增量的方向不匹配，需要重新设置死区测试参数！");
+                    return;
+                }
+                deadBandPara.step_num = Convert.ToInt32((deadBandPara.EndAgl - deadBandPara.StartAgl) / deadBandPara.AglStep);
+                deadBandPara.currentAgl = deadBandPara.StartAgl;
+                testCfgPara.isDeadBandTest = true;
             }
         }
     }

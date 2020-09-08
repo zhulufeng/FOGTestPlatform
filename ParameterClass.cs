@@ -42,6 +42,7 @@ namespace FOGTestPlatform
         public bool isHighFreq = false;
         public bool isSaveHex = false;
         public bool isScaleFactorTest = false;
+        public bool isDeadBandTest = false;
     }
  
     public class Fogdata
@@ -58,6 +59,7 @@ namespace FOGTestPlatform
         public List<double> tdata_array = new List<double>();//用于平滑的列表,事后处理时候用于保存原始数据
         public List<double> time_array = new List<double>();
         public List<double> fdata_1s_array = new List<double>();
+        public List<double> fdata_deadband_1s_array = new List<double>();
         public List<double> tdata_1s_array = new List<double>();
         public List<double> fdata_smooth_array = new List<double>();
         public List<double> tdata_smooth_array = new List<double>();
@@ -94,6 +96,7 @@ namespace FOGTestPlatform
         public int testTimes = 0;
         public int sampleTime = 0;//转速平稳，采样时间 1 = 100ms
         public int switchRateTime = 0;//转速切换时间 1 = 100ms
+
         public List<double> drawIndexTime = new List<double>();
     }
     class ScaleFactorPara
@@ -102,6 +105,17 @@ namespace FOGTestPlatform
         public int paracount = 0;
         public int rateParaID = 1;
 
+    }
+    public class DeadBandPara
+    {
+        public double StartAgl;
+        public double EndAgl;
+        public double AglStep;
+        public int StepTime;
+        public double currentAgl;
+        //public int DeadBandSampleTime = 0;//转速平稳，采样时间 1 = 100ms
+        public int DeadBandswtichAngleTime = 500;//角度切换时间 1 = 100ms
+        public int step_num = 0;
     }
 
 }
